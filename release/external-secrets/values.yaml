@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: external-secrets-release-values
+  namespace: kube-system
+data:
+  values.yaml: |
+    external-secrets:
+      installCRDs: true
+      leaderElect: true
+      nodeSelector:
+        nodegroup: "${MANAGEMENT_NODE_GROUP_NAME}"
+      tolerations:
+        - key: "dedicated"
+          operator: "Equal"
+          value: "${MANAGEMENT_NODE_GROUP_ROLE}"
+          effect: "NoSchedule"
+      certController:
+        nodeSelector:
+          nodegroup: "${MANAGEMENT_NODE_GROUP_NAME}"
+        tolerations:
+          - key: "dedicated"
+            operator: "Equal"
+            value: "${MANAGEMENT_NODE_GROUP_ROLE}"
+            effect: "NoSchedule"
+      webhook:
+        nodeSelector:
+          nodegroup: "${MANAGEMENT_NODE_GROUP_NAME}"
+        tolerations:
+          - key: "dedicated"
+            operator: "Equal"
+            value: "${MANAGEMENT_NODE_GROUP_ROLE}"
+            effect: "NoSchedule"
